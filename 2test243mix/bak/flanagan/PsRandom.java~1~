@@ -1,6 +1,0 @@
-package flanagan;
-
-public class PsRandom {
-     public PsRandom() {
-     }
-}

@@ -1,6 +1,0 @@
-package flanagan.analysis;
-
-public class Stat {
-     public Stat() {
-     }
-}
