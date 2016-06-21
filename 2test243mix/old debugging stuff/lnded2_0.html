@@ -1,0 +1,1132 @@
+<HTML>
+<HEAD>
+<TITLE>JBuilder - lnded2_0.java</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="KEYWORDS" CONTENT="BorlandHtml">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial,Helvetica" COLOR="#000000">
+lnded2_0.java</FONT>
+</center><FONT SIZE=-2>
+<FONT FACE="Arial,Helvetica" COLOR="#000000">
+Created with <a href="http://www.borland.com">JBuilder</a></FONT></FONT></TD></TR></TABLE></FONT>
+<PRE><FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.io.*;
+</FONT><FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.text.*;
+</FONT><FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> java.util.*;
+</FONT><FONT COLOR="#000080"><B>import</B></FONT><FONT COLOR="#000000"> swcparts.*;
+
+</FONT><FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>class</B></FONT><FONT COLOR="#000000"> lnded2_0 {
+
+     </FONT><FONT COLOR="#000080"><B>public</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>static</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>void</B></FONT><FONT COLOR="#000000"> <I>main</I>(String[] args) {
+          </FONT><FONT COLOR="#000080"><B>try</B></FONT><FONT COLOR="#000000"> {
+
+               </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//***********************Initialize global variables***************************</FONT><FONT COLOR="#000000">
+                 </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                  </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> DRconstant = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> TRconstant = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> PDRconstant = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> SomaType = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//sets the type tag for soma</FONT><FONT COLOR="#000000">
+
+               </FONT><FONT COLOR="#008000">//Parameter (.prn) file setable varialbes with default values</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> typeToDo = </FONT><FONT COLOR="#0000ff">3</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//Type tag to do, default (3) is dendrite/basal dendrite</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> nToDo = </FONT><FONT COLOR="#0000ff">10</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//number of virt trees to produce for each real one</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#008000">//int nParams = 0; //variable to do multiple parameters with one program call, not currently in use</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#008000">//int binType = 1; //variable to set type of binning to use, not currently in use</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> Binning = </FONT><FONT COLOR="#0000ff">85</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//minimum number of points (TR) in each bin</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> termBinning = </FONT><FONT COLOR="#0000ff">85</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//minimum number of points (tr) in each bin when constructing radius bins for Both and RAD term type</FONT><FONT COLOR="#000000">
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> MinRad = .</FONT><FONT COLOR="#0000ff">15</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>boolean</B></FONT><FONT COLOR="#000000"> Symetric = </FONT><FONT COLOR="#000080"><B>true</B></FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>boolean</B></FONT><FONT COLOR="#000000"> Uniform = </FONT><FONT COLOR="#000080"><B>true</B></FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>boolean</B></FONT><FONT COLOR="#000000"> Debugging = </FONT><FONT COLOR="#000080"><B>true</B></FONT><FONT COLOR="#000000">;
+               String paramToDo = </FONT><FONT COLOR="#0000ff">""</FONT><FONT COLOR="#000000">;
+               String termType = </FONT><FONT COLOR="#0000ff">"FP"</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">// FP = fundemental param, RAD = radius, BOTH</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> RandomSeed = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+
+               </FONT><FONT COLOR="#008000">//Data arays, maximum sizes and subscript variables</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> maxInFiles = </FONT><FONT COLOR="#0000ff">100</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> actualInFiles = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> maxBiffLines = </FONT><FONT COLOR="#0000ff">10000</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> realBiffCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> maxVirtBifLines = </FONT><FONT COLOR="#0000ff">10000</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> actualBiffLines = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> maxStems = </FONT><FONT COLOR="#0000ff">1000</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> stemCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> maxInputLines = </FONT><FONT COLOR="#0000ff">120</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> actualInputLines = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> maxBins = </FONT><FONT COLOR="#0000ff">60</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> actualBins = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> actualTermBins = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+
+               String[] inputLineArray = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> String[maxInputLines];
+               String[] inputFileArray = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> String[maxInFiles];
+               swcparts.SwcNeuron[] Neurons = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.SwcNeuron[maxInFiles];
+               swcparts.BiffLine[] BifsArray = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BiffLine[maxBiffLines];
+               swcparts.BinnedBiffData[] InputTable = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BinnedBiffData[maxBins];
+               swcparts.BinnedBiffData[] RadTable = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BinnedBiffData[maxBins];
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[] </FONT><FONT COLOR="#808080">cellBifs</FONT><FONT COLOR="#000000"> = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[maxInFiles];
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[] </FONT><FONT COLOR="#808080">cellStems</FONT><FONT COLOR="#000000"> = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[maxInFiles];
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[] realBifs = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[maxStems];
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">[] stemRadArray = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">[maxStems];
+
+               </FONT><FONT COLOR="#008000">//cell parameter temporary values</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDSrad;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDLrad;
+
+               </FONT><FONT COLOR="#008000">//other variables</FONT><FONT COLOR="#000000">
+
+               String inFile = </FONT><FONT COLOR="#0000ff">""</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//input file name from cmd line</FONT><FONT COLOR="#000000">
+               String outFile = </FONT><FONT COLOR="#0000ff">""</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#008000">//output file prefix from cmd line</FONT><FONT COLOR="#000000">
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> realBiffMean = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#808080">realBiffStdev</FONT><FONT COLOR="#000000"> = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempBiff;
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> stemMin = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> stemMax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> stemMean = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> stemStdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempStemSum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempStemSqSum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> termBinCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempRADBiffs = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempRADTerms = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBiffProp = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+               </FONT><FONT COLOR="#008000">//set number output style</FONT><FONT COLOR="#000000">
+               NumberFormat myFormat = <I>NumberFormat</I>.<I>getInstance</I>();
+               myFormat.setMinimumIntegerDigits(</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+               myFormat.setMaximumFractionDigits(</FONT><FONT COLOR="#0000ff">5</FONT><FONT COLOR="#000000">);
+               myFormat.setMinimumFractionDigits(</FONT><FONT COLOR="#0000ff">5</FONT><FONT COLOR="#000000">);
+
+               </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//*****************Parse command line arguments********************************</FONT><FONT COLOR="#000000">
+                 </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+
+                  </FONT><FONT COLOR="#008000">//set input and out file names</FONT><FONT COLOR="#000000">
+                  </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (args.length == </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) {
+                       inFile = args[</FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">];
+                       outFile = args[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                  }
+
+                  </FONT><FONT COLOR="#008000">//too few or too many command line args</FONT><FONT COLOR="#000000">
+                  </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                       <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Incorrect command line arguments."</FONT><FONT COLOR="#000000">);
+                       <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Format = [input file name], [output file prefix] "</FONT><FONT COLOR="#000000">);
+                       <I>System</I>.<I>exit</I>(</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+                  }
+
+               </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//*****************Open and parse .prn input file******************************</FONT><FONT COLOR="#000000">
+                 </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+
+                  </FONT><FONT COLOR="#008000">//open input file</FONT><FONT COLOR="#000000">
+                  FileInputStream fin = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> FileInputStream(inFile);
+               BufferedInputStream bin = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedInputStream(fin);
+               </FONT><FONT COLOR="#008000">//character stream</FONT><FONT COLOR="#000000">
+               BufferedReader r = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedReader(</FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> InputStreamReader(bin));
+               r.mark(</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+
+               </FONT><FONT COLOR="#008000">//Input comment lines into string array</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000"> &LT; maxInputLines; j++) {
+                    inputLineArray[j] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> String();
+                    inputLineArray[j] = r.readLine();
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j] != </FONT><FONT COLOR="#000080"><B>null</B></FONT><FONT COLOR="#000000">) {
+                         ++actualInputLines;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                         </FONT><FONT COLOR="#000080"><B>break</B></FONT><FONT COLOR="#000000">;
+                    }
+               }
+               r.close();
+
+               </FONT><FONT COLOR="#008000">//set variables as given in input file</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualInputLines; j++) {
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"TYPETODO"</FONT><FONT COLOR="#000000">)) {
+                         typeToDo = <I>Integer</I>.<I>parseInt</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"NTODO"</FONT><FONT COLOR="#000000">)) {
+                         nToDo = <I>Integer</I>.<I>parseInt</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"PARAM"</FONT><FONT COLOR="#000000">)) {
+                         paramToDo = inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)];
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"BINNING"</FONT><FONT COLOR="#000000">)) {
+                         Binning = <I>Integer</I>.<I>parseInt</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"SEED"</FONT><FONT COLOR="#000000">)) {
+                         RandomSeed = <I>Integer</I>.<I>parseInt</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"MINRAD"</FONT><FONT COLOR="#000000">)) {
+                         MinRad = <I>Double</I>.<I>parseDouble</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"UNIFORM"</FONT><FONT COLOR="#000000">)) {
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)].startsWith(</FONT><FONT COLOR="#0000ff">"TRUE"</FONT><FONT COLOR="#000000">)) {
+                             Uniform = </FONT><FONT COLOR="#000080"><B>true</B></FONT><FONT COLOR="#000000">;
+                        }
+                        </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)].startsWith(</FONT><FONT COLOR="#0000ff">"FALSE"</FONT><FONT COLOR="#000000">)) {
+                             Uniform = </FONT><FONT COLOR="#000080"><B>false</B></FONT><FONT COLOR="#000000">;
+                        }
+                        </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                             <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"ERROR:  Unrecognized value given for UNIFORM.  Only TRUE and FALSE accepted.  Default value of "</FONT><FONT COLOR="#000000">+Uniform+ </FONT><FONT COLOR="#0000ff">" used."</FONT><FONT COLOR="#000000">);
+                        }
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"SYMETRIC"</FONT><FONT COLOR="#000000">)) {
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)].startsWith(</FONT><FONT COLOR="#0000ff">"TRUE"</FONT><FONT COLOR="#000000">)) {
+                              Symetric = </FONT><FONT COLOR="#000080"><B>true</B></FONT><FONT COLOR="#000000">;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)].startsWith(</FONT><FONT COLOR="#0000ff">"FALSE"</FONT><FONT COLOR="#000000">)) {
+                              Symetric = </FONT><FONT COLOR="#000080"><B>false</B></FONT><FONT COLOR="#000000">;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                              <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"ERROR:  Unrecognized value given for SYMETRIC.  Only TRUE and FALSE accepted.  Default value of "</FONT><FONT COLOR="#000000">+Symetric+ </FONT><FONT COLOR="#0000ff">" used."</FONT><FONT COLOR="#000000">);
+                         }
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"DEBUGGING"</FONT><FONT COLOR="#000000">)) {
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)].startsWith(</FONT><FONT COLOR="#0000ff">"TRUE"</FONT><FONT COLOR="#000000">)) {
+                              Debugging = </FONT><FONT COLOR="#000080"><B>true</B></FONT><FONT COLOR="#000000">;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)].startsWith(</FONT><FONT COLOR="#0000ff">"FALSE"</FONT><FONT COLOR="#000000">)) {
+                              Debugging = </FONT><FONT COLOR="#000080"><B>false</B></FONT><FONT COLOR="#000000">;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                              <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"ERROR:  Unrecognized value given for DEBUGGING.  Only TRUE and FALSE accepted.  Default value of "</FONT><FONT COLOR="#000000">+Debugging+ </FONT><FONT COLOR="#0000ff">" used."</FONT><FONT COLOR="#000000">);
+                         }
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"TERMTYPE"</FONT><FONT COLOR="#000000">)) {
+                         termType = inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)];
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"TERMBINNING"</FONT><FONT COLOR="#000000">)) {
+                         termBinning = <I>Integer</I>.<I>parseInt</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (inputLineArray[j].startsWith(</FONT><FONT COLOR="#0000ff">"INPUT"</FONT><FONT COLOR="#000000">)) {
+                         actualInFiles = <I>Integer</I>.<I>parseInt</I>(inputLineArray[ (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)]);
+                         </FONT><FONT COLOR="#008000">//  System.out.println("infiles = " + actualInFiles);</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (actualInFiles &GT; maxInFiles) {
+                              <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Too many input files given.  Only first "</FONT><FONT COLOR="#000000"> +
+                                                 maxInFiles + </FONT><FONT COLOR="#0000ff">" will be used."</FONT><FONT COLOR="#000000">);
+                              actualInFiles = maxInFiles;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (actualInFiles + j + </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) &GT; actualInputLines) {
+                              <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Input File Error. Not enought input files given."</FONT><FONT COLOR="#000000">);
+                              <I>System</I>.<I>exit</I>( -</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+                         }
+                         </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> infilecount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> k = j + </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">; k &LT;= j + actualInFiles + </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">; k++) {
+                              ++infilecount;
+                              inputFileArray[infilecount] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> String(inputLineArray[k]);
+                         }
+                    }
+
+               }
+
+               </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//***********************open and process SWC files****************************</FONT><FONT COLOR="#000000">
+                 </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+
+                  </FONT><FONT COLOR="#008000">//initialize output streams ****************************************************</FONT><FONT COLOR="#000000">
+
+                  </FONT><FONT COLOR="#008000">//virtBifsOutFile :  print NBifs for each virt tree</FONT><FONT COLOR="#000000">
+                  FileOutputStream ggg = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> FileOutputStream(</FONT><FONT COLOR="#0000ff">"VirtBifs_"</FONT><FONT COLOR="#000000"> + outFile);
+               BufferedOutputStream hhh = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedOutputStream(ggg);
+               PrintWriter virtBifsOutFile = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(hhh);
+
+               </FONT><FONT COLOR="#008000">//inputInfoOutFile :  print each real bif line for debugging</FONT><FONT COLOR="#000000">
+               FileOutputStream fo = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> FileOutputStream(</FONT><FONT COLOR="#0000ff">"InputInfo_"</FONT><FONT COLOR="#000000"> + outFile);
+               BufferedOutputStream bfot = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedOutputStream(fo);
+               PrintWriter inputInfoOutFile = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(bfot);
+
+               </FONT><FONT COLOR="#008000">//tableOut :  print table file for program</FONT><FONT COLOR="#000000">
+               FileOutputStream fob = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> FileOutputStream(</FONT><FONT COLOR="#0000ff">"Table_"</FONT><FONT COLOR="#000000"> + outFile);
+               BufferedOutputStream bfotb = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedOutputStream(fob);
+               PrintWriter tableOut = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(bfotb);
+               swcparts.BiffLine tempBiffLine = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BiffLine();
+
+               </FONT><FONT COLOR="#008000">//realtBifsFile :  print NBifs for each real tree</FONT><FONT COLOR="#000000">
+               FileOutputStream foc = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> FileOutputStream(</FONT><FONT COLOR="#0000ff">"RealBifs_"</FONT><FONT COLOR="#000000"> + outFile);
+               BufferedOutputStream cfot = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedOutputStream(foc);
+               PrintWriter realBifsFile = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(cfot);
+
+               </FONT><FONT COLOR="#008000">//virtDetailsOut :  print parameter details for each virt tree</FONT><FONT COLOR="#000000">
+               FileOutputStream fod = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> FileOutputStream(</FONT><FONT COLOR="#0000ff">"OutputInfo_"</FONT><FONT COLOR="#000000"> + outFile);
+               BufferedOutputStream dfot = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> BufferedOutputStream(fod);
+               PrintWriter virtDetailsOut = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> PrintWriter(dfot);
+
+               </FONT><FONT COLOR="#008000">//open swc files and place them into an array of swcNeuron type</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualInFiles; j++) {
+                    Neurons[j] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.SwcNeuron();
+                    Neurons[j].InitSwcNeuron(inputFileArray[j]);
+                    <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"processing "</FONT><FONT COLOR="#000000"> + inputFileArray[j]);
+               }
+
+               </FONT><FONT COLOR="#008000">//Put all bifurcation information into bifLineType array and all stem radius into array of doubles</FONT><FONT COLOR="#000000">
+
+
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualInFiles; j++) { </FONT><FONT COLOR="#008000">//for each neuron</FONT><FONT COLOR="#000000">
+                    realBifs[j] = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> k = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; k &LT;= Neurons[j].getSize(); k++) { </FONT><FONT COLOR="#008000">//for every line</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#008000">//  System.out.println(j + "  " + k);</FONT><FONT COLOR="#000000">
+
+                         Neurons[j].setEuclidianDistancesToSoma();
+
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Neurons[j].getType(k) == typeToDo) { </FONT><FONT COLOR="#008000">//only wory about lines of correct type</FONT><FONT COLOR="#000000">
+                              </FONT><FONT COLOR="#008000">// set initial diameters</FONT><FONT COLOR="#000000">
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (k &GT; </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                                   </FONT><FONT COLOR="#008000">//count stems and get stem start radius</FONT><FONT COLOR="#000000">
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Neurons[j].getType(Neurons[j].getLink(k)) == SomaType) {
+                                        ++stemCount;
+                                        stemRadArray[stemCount] = Neurons[j].getRad(k);
+                                   }
+                              }
+
+                              </FONT><FONT COLOR="#008000">//count Bifs for this cell</FONT><FONT COLOR="#000000">
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (Neurons[j].getNumDaughters(k) == </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">)) {
+                                   ++realBifs[j];
+                              }
+
+                              </FONT><FONT COLOR="#008000">//initialize and populate BIFSarray with only those lines that are bifurcations or terminations</FONT><FONT COLOR="#000000">
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (Neurons[j].getNumDaughters(k) == </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) ||
+                                  (Neurons[j].getNumDaughters(k) == </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">)) {
+                                   ++actualBiffLines;
+                                   BifsArray[actualBiffLines] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BiffLine();
+                                   tempBiff = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                                   tempDSrad = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                                   tempDLrad = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+                                   </FONT><FONT COLOR="#008000">//if bifurcation, set daughter diameters</FONT><FONT COLOR="#000000">
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Neurons[j].getNumDaughters(k) == </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) {
+                                        tempBiff = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+
+                                        </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Neurons[j].getDaughter1rad(k) &GT;
+                                            Neurons[j].getDaughter2rad(k)) {
+                                             tempDSrad = Neurons[j].getDaughter2rad(k);
+                                             tempDLrad = Neurons[j].getDaughter1rad(k);
+                                        }
+                                        </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                             tempDSrad = Neurons[j].getDaughter1rad(k);
+                                             tempDLrad = Neurons[j].getDaughter2rad(k);
+                                        }
+                                   }
+
+                                   BifsArray[actualBiffLines].setAll(Neurons[j].getBranchOrder(k),
+                                          (Neurons[j].getTreeLength(k) -
+                                           Neurons[j].getBranchLength(k)),
+                                          Neurons[j].getTreeLength(k),
+                                          Neurons[j].getEDistanceToSoma(k), Neurons[j].getY(k),
+                                          Neurons[j].getRad(k), Neurons[j].getBranchStartRad(k),
+                                          Neurons[j].getBranchLength(k), tempBiff, tempDSrad,
+                                          tempDLrad);
+                              }
+                         }
+                    }
+                    realBiffCount = realBiffCount + realBifs[j];
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                         realBifsFile.println(realBifs[j]);
+                    }
+               }
+               realBiffMean = (realBiffCount / stemCount);
+               </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                    realBifsFile.println(</FONT><FONT COLOR="#0000ff">"Real Bifs Mean per tree = "</FONT><FONT COLOR="#000000"> + realBiffMean);
+               }
+               </FONT><FONT COLOR="#008000">//compute real bifs stdev and mean per tree *****needs to be done</FONT><FONT COLOR="#000000">
+
+               </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//****If needed, set up start radius bins and compute term rad on end radi*****</FONT><FONT COLOR="#000000">
+                 </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+
+
+                  </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( ( (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">)) || (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"BOTH"</FONT><FONT COLOR="#000000">))) &&
+                      ! (paramToDo.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">))) {
+                       </FONT><FONT COLOR="#008000">//assign each bifline to a bin with min number of lines given by termBinning variable</FONT><FONT COLOR="#000000">
+
+                       </FONT><FONT COLOR="#008000">// sort data by radius to populate radius terminal table</FONT><FONT COLOR="#000000">
+                       </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = actualBiffLines + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; --i &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; ) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                            </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT; i; j++) {
+
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[j].getStartRAD() &GT; BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartRAD()) {
+                                      tempBiffLine = BifsArray[j];
+                                      BifsArray[j] = BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                                      BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">] = tempBiffLine;
+                                 }
+                            }
+                       }
+
+                       </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+
+                            ++termBinCount;
+                            </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (i &GT;= </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) {
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (termBinCount &GT; termBinning) &&
+                                     (BifsArray[i].getStartFundementalParamValue(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">) !=
+                                      BifsArray[i - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartFundementalParamValue(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">))) {
+                                      ++actualTermBins;
+                                      </FONT><FONT COLOR="#008000">//           nextBin = true;</FONT><FONT COLOR="#000000">
+                                      termBinCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                                 }
+                            }
+                            BifsArray[i].setStartBinLine(actualTermBins);
+                       }
+
+                       </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempFPRADmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                       </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                            tableOut.println(</FONT><FONT COLOR="#0000ff">"RAD table"</FONT><FONT COLOR="#000000">);
+                            tableOut.println(</FONT><FONT COLOR="#0000ff">""</FONT><FONT COLOR="#000000">);
+                       }
+                       </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualTermBins; j++) { </FONT><FONT COLOR="#008000">//go through each line</FONT><FONT COLOR="#000000">
+
+                            RadTable[j] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BinnedBiffData();
+
+                            </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getStartBinLine() == j) {
+
+                                      </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (j == actualTermBins) { </FONT><FONT COLOR="#008000">//if in last bin set max to current value (will be max when i finishes</FONT><FONT COLOR="#000000">
+                                           tempFPRADmax = BifsArray[i].
+                                                  getStartFundementalParamValue(
+                                                  </FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">);
+                                      }
+                                      </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> { </FONT><FONT COLOR="#008000">//otherwise set bin max to average of this bin max and next bin min</FONT><FONT COLOR="#000000">
+                                           </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartBinLine() == (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)) {
+                                                tempFPRADmax = (BifsArray[i].
+                                                       getStartFundementalParamValue(
+                                                       </FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">) + BifsArray[i +
+                                                       </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartFundementalParamValue(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">)) / </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">;
+                                           }
+                                      }
+                                 }
+                            }
+                       }
+                       </FONT><FONT COLOR="#008000">//set end bin line</FONT><FONT COLOR="#000000">
+                       </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                            </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = actualTermBins; j &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j--) {
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getEndRAD() &LT;=
+                                     RadTable[j].getFPbinMax()) {
+                                      BifsArray[i].setEndBinLine(j);
+                                 }
+                            }
+                       }
+
+                       </FONT><FONT COLOR="#008000">//go through each bin and compute term prob on end bin number</FONT><FONT COLOR="#000000">
+                       </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualTermBins; j++) {
+                            tempRADBiffs = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                            tempRADTerms = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                            tempBiffProp = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                            </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getEndBinLine() == j) {
+
+                                      </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getBIFF() == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                                           ++tempRADBiffs;
+                                      }
+                                      </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                           ++tempRADTerms;
+                                      }
+                                 }
+                            }
+                            tempBiffProp = (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) tempRADBiffs /
+                                   (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) (tempRADBiffs + tempRADTerms);
+                            RadTable[j].setBifPercent(tempBiffProp);
+                            RadTable[j].setFPbinMax(tempFPRADmax);
+                            </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                                 tableOut.println(j + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> + RadTable[j].getFPbinMax() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                                  RadTable[j].getBifPercent());
+                            }
+                       }
+                  }
+
+               </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//******************Set up Fundemental Parameter bins *************************</FONT><FONT COLOR="#000000">
+                 </FONT><FONT COLOR="#008000">//*****************************************************************************</FONT><FONT COLOR="#000000">
+
+                  </FONT><FONT COLOR="#008000">//nested loops to bubble sort biflines by fundemental parameter</FONT><FONT COLOR="#000000">
+                  </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = actualBiffLines + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; --i &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; ) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                       </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT; i; j++) {
+                            </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (paramToDo.startsWith(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">)) {
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[j].getStartRAD() &GT; BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartRAD()) {
+                                      tempBiffLine = BifsArray[j];
+                                      BifsArray[j] = BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                                      BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">] = tempBiffLine;
+                                 }
+                            }
+                            </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (paramToDo.startsWith(</FONT><FONT COLOR="#0000ff">"BO"</FONT><FONT COLOR="#000000">)) {
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[j].getBO() &GT; BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getBO()) {
+                                      tempBiffLine = BifsArray[j];
+                                      BifsArray[j] = BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                                      BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">] = tempBiffLine;
+                                 }
+                            }
+                            </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (paramToDo.startsWith(</FONT><FONT COLOR="#0000ff">"PLS"</FONT><FONT COLOR="#000000">)) {
+                                 </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[j].getStartPLS() &GT; BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartPLS()) {
+                                      tempBiffLine = BifsArray[j];
+                                      BifsArray[j] = BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                                      BifsArray[j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">] = tempBiffLine;
+                                 }
+                            }
+                            </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                 <I>System</I>.<I>out</I>.println(
+                                        </FONT><FONT COLOR="#0000ff">"Incorect fundemental paramater given.  only RAD, PLS, and BO, allowed"</FONT><FONT COLOR="#000000">);
+                                 <I>System</I>.<I>exit</I>(</FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">);
+                            }
+                       }
+                  }
+               </FONT><FONT COLOR="#008000">//output bifsarray for error check</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> binCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                    inputInfoOutFile.println(
+                           </FONT><FONT COLOR="#0000ff">"LNum,BO,SPLS,SRAD,SBinLine,BIFF,PDR,DR,D1rad,D2rad,BPL,EPLS,TR,ERAD,EBinLine"</FONT><FONT COLOR="#000000">);
+               }
+
+               </FONT><FONT COLOR="#008000">//assign each bifline to a bin with min number of lines given by Binning variable</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                    ++binCount;
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (i &GT;= </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) {
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (binCount &GT; Binning) &&
+                             (BifsArray[i].getStartFundementalParamValue(paramToDo) !=
+                              BifsArray[i - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartFundementalParamValue(paramToDo))) {
+                              ++actualBins;
+                              binCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         }
+                    }
+                    BifsArray[i].setStartBinLine(actualBins);
+               }
+
+               </FONT><FONT COLOR="#008000">//Set bin fp max for all biflines</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempFPmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualBins; j++) { </FONT><FONT COLOR="#008000">//go through each bin</FONT><FONT COLOR="#000000">
+                    InputTable[j] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BinnedBiffData();
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getStartBinLine() == j) {
+
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (j == actualBins) { </FONT><FONT COLOR="#008000">//if in last bin set max to current value (will be max when i finishes</FONT><FONT COLOR="#000000">
+                                   tempFPmax = BifsArray[i].getStartFundementalParamValue(paramToDo);
+                              }
+                              </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> { </FONT><FONT COLOR="#008000">//otherwise set bin max to average of this bin max and next bin min</FONT><FONT COLOR="#000000">
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartBinLine() == (j + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)) {
+                                        tempFPmax = (BifsArray[i].getStartFundementalParamValue(
+                                               paramToDo) + BifsArray[i +
+                                               </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].getStartFundementalParamValue(paramToDo)) / </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">;
+                                   }
+                              }
+                         }
+                    }
+                    InputTable[j].setFPmax(tempFPmax);
+               }
+
+               </FONT><FONT COLOR="#008000">//set end bin line</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                    BifsArray[i].setEndBinLine(actualBins);
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = actualBins; j &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j--) {
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getEndFundementalParamValue(paramToDo) &LT;=
+                             InputTable[j].getFPbinMax()) {
+                              BifsArray[i].setEndBinLine(j);
+                         }
+                    }
+               }
+
+               </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                         inputInfoOutFile.println(i + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getBO() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getStartPLS() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getStartRAD() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getStartBinLine() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getBIFF() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getPDR() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getDR() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getDLRAD() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getDSRAD() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getBPL() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getEndPLS() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getTR() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getEndRAD() + </FONT><FONT COLOR="#0000ff">" ,  "</FONT><FONT COLOR="#000000"> +
+                                                  BifsArray[i].getEndBinLine());
+                    }
+               }
+
+</FONT><FONT COLOR="#008000">//**************Create input table for sampling virtual neurons****************</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#008000">//compute  initial stem diameter mean, stdev</FONT><FONT COLOR="#000000">
+                </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (stemCount &LT;= </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">) {
+                     <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"No tree stems found."</FONT><FONT COLOR="#000000">);
+                     <I>System</I>.<I>exit</I>(</FONT><FONT COLOR="#0000ff">4</FONT><FONT COLOR="#000000">);
+                }
+                </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                     stemMin = stemRadArray[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                     stemMax = stemRadArray[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+                     </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= stemCount; i++) { </FONT><FONT COLOR="#008000">//for each stem</FONT><FONT COLOR="#000000">
+                          tempStemSum = tempStemSum + stemRadArray[i];
+                          </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (stemRadArray[i] &LT; stemMin) {
+                               stemMin = stemRadArray[i];
+                          }
+                          </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (stemRadArray[i] &GT; stemMax) {
+                               stemMax = stemRadArray[i];
+                          }
+                     }
+                     stemMean = tempStemSum / stemCount;
+                     </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= stemCount; i++) { </FONT><FONT COLOR="#008000">//for each stem</FONT><FONT COLOR="#000000">
+
+                          tempStemSqSum = tempStemSqSum +
+                                 ( (stemRadArray[i] - stemMean) *
+                                  (stemRadArray[i] - stemMean));
+                     }
+                     stemStdev = <I>java</I>.<I>lang</I>.<I>Math</I>.<I>sqrt</I>(tempStemSqSum / (stemCount - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">)); ;
+                }
+
+               </FONT><FONT COLOR="#008000">// compute basic parameter means, mins, maxes, and unity fractions</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDRmin;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDRmax;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDRsum;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempDRcount;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempDRConstantCount;
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDRmin;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDRmax;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDRsum;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempPDRcount;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempPDRConstantCount;
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTRmin;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTRmax;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTRsum;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempTRcount;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempTRConstantCount;
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBPLmin;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBPLmax;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBPLsum;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempBPLcount;
+
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempBifs;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempTerms;
+
+               </FONT><FONT COLOR="#008000">//header for table file</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                    tableOut.println(</FONT><FONT COLOR="#0000ff">"stemN, stemMean, stemStdev, stemMin, stemMax"</FONT><FONT COLOR="#000000">);
+                    tableOut.println(stemCount + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> + stemMean + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> + stemStdev + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> + stemMin +
+                                     </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> + stemMax);
+                    tableOut.println();
+                    tableOut.println(</FONT><FONT COLOR="#0000ff">"j, binMax, BifPercent,DRmean,DRstdev,DRmax,DRmin, DRuf, PDRmean, PDRstdev,PDRmax,PDRmin, PDRuf, TRmean,TRstdev,TRmax,TRmin,TRuf,Nbifs,Ntips,BPLmean,BPLstdev,BPLmax,BPLmin"</FONT><FONT COLOR="#000000">);
+               }
+
+               </FONT><FONT COLOR="#008000">//for each bin</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j &LT;= actualBins; j++) { </FONT><FONT COLOR="#008000">//go through each bin</FONT><FONT COLOR="#000000">
+
+                    tempDRmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempDRcount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempDRConstantCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempDRsum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempDRmin = </FONT><FONT COLOR="#0000ff">1000</FONT><FONT COLOR="#000000">;
+
+                    tempPDRmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempPDRcount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempPDRConstantCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempPDRsum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempPDRmin = </FONT><FONT COLOR="#0000ff">1000</FONT><FONT COLOR="#000000">;
+
+                    tempTRmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempTRcount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempTRConstantCount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempTRsum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempTRmin = </FONT><FONT COLOR="#0000ff">1000</FONT><FONT COLOR="#000000">;
+
+                    tempBPLmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempBPLcount = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempBPLsum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempBPLmin = </FONT><FONT COLOR="#0000ff">1000</FONT><FONT COLOR="#000000">;
+
+                    tempBifs = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    tempTerms = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getEndBinLine() == j) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getBIFF() == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                                   ++tempBifs;
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getDR() == DRconstant) {
+                                        ++tempDRConstantCount;
+                                   }
+                                   </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                        ++tempDRcount;
+                                        tempDRsum = tempDRsum + BifsArray[i].getDR();
+                                        </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempDRmax &LT; BifsArray[i].getDR()) {
+                                             tempDRmax = BifsArray[i].getDR();
+                                        }
+                                        </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempDRmin &GT; BifsArray[i].getDR()) {
+                                             tempDRmin = BifsArray[i].getDR();
+                                        }
+                                   }
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getPDR() == PDRconstant) {
+                                        ++tempPDRConstantCount;
+                                   }
+                                   </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                        ++tempPDRcount;
+                                        tempPDRsum = tempPDRsum + BifsArray[i].getPDR();
+                                        </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempPDRmax &LT; BifsArray[i].getPDR()) {
+                                             tempPDRmax = BifsArray[i].getPDR();
+                                        }
+                                        </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempPDRmin &GT; BifsArray[i].getPDR()) {
+                                             tempPDRmin = BifsArray[i].getPDR();
+                                        }
+                                   }
+                              }
+                              </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                   ++tempTerms;
+                              }
+                         }
+
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getStartBinLine() == j) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getTR() == TRconstant) {
+                                   ++tempTRConstantCount;
+                              }
+                              </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                                   ++tempTRcount;
+                                   tempTRsum = tempTRsum + BifsArray[i].getTR();
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempTRmax &LT; BifsArray[i].getTR()) {
+                                        tempTRmax = BifsArray[i].getTR();
+                                   }
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempTRmin &GT; BifsArray[i].getTR()) {
+                                        tempTRmin = BifsArray[i].getTR();
+                                   }
+                              }
+                              ++tempBPLcount;
+                              tempBPLsum = tempBPLsum + BifsArray[i].getBPL();
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempBPLmax &LT; BifsArray[i].getBPL()) {
+                                   tempBPLmax = BifsArray[i].getBPL();
+                              }
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempBPLmin &GT; BifsArray[i].getBPL()) {
+                                   tempBPLmin = BifsArray[i].getBPL();
+                              }
+                         }
+                    }
+
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDRuf = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDRuf = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTRuf = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+                    tempDRuf = ( (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) tempDRConstantCount /
+                                (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) (tempDRcount + tempDRConstantCount));
+                    tempPDRuf = (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) tempPDRConstantCount /
+                           (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) (tempPDRcount + tempPDRConstantCount);
+                    tempTRuf = (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) tempTRConstantCount /
+                           (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) (tempTRcount + tempTRConstantCount);
+
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDRmean = tempDRsum / tempDRcount;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDRmean = tempPDRsum / tempPDRcount;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTRmean = tempTRsum / tempTRcount;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBPLmean = tempBPLsum / tempBPLcount;
+
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> diffSqSumDR = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> diffSqSumPDR = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> diffSqSumTR = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBPLstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> diffSqSumBPL = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+                    </FONT><FONT COLOR="#008000">//compute stdevs and bin maxes</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= actualBiffLines; i++) { </FONT><FONT COLOR="#008000">//for each biffline</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getEndBinLine() == j) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getBIFF() == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                                   </FONT><FONT COLOR="#008000">//compute sum of differences squared for different parameters</FONT><FONT COLOR="#000000">
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getDR() != DRconstant) {
+                                        diffSqSumDR = diffSqSumDR +
+                                               ( (BifsArray[i].getDR() - tempDRmean) *
+                                                (BifsArray[i].getDR() - tempDRmean));
+                                   }
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getPDR() != PDRconstant) {
+                                        diffSqSumPDR = diffSqSumPDR +
+                                               ( (BifsArray[i].getPDR() - tempPDRmean) *
+                                                (BifsArray[i].getPDR() - tempPDRmean));
+                                   }
+                              }
+                         }
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getStartBinLine() == j) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (BifsArray[i].getTR() != TRconstant) {
+                                   diffSqSumTR = diffSqSumTR +
+                                          ( (BifsArray[i].getTR() - tempTRmean) *
+                                           (BifsArray[i].getTR() - tempTRmean));
+                              }
+                              diffSqSumBPL = diffSqSumBPL +
+                                     ( (BifsArray[i].getBPL() - tempBPLmean) *
+                                      (BifsArray[i].getBPL() - tempBPLmean));
+                         }
+                    }
+
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (diffSqSumDR == </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">) || (tempDRcount &LT;= </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">)) {
+                         tempDRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                         tempDRstdev = <I>java</I>.<I>lang</I>.<I>Math</I>.<I>sqrt</I>(diffSqSumDR / (tempDRcount - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">));
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (diffSqSumPDR == </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">) || (tempPDRcount &LT;= </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">)) {
+                         tempPDRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                         tempPDRstdev = <I>java</I>.<I>lang</I>.<I>Math</I>.<I>sqrt</I>(diffSqSumPDR / (tempPDRcount - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">));
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (diffSqSumTR == </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">) || (tempTRcount &LT;= </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">)) {
+                         tempTRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                         tempTRstdev = <I>java</I>.<I>lang</I>.<I>Math</I>.<I>sqrt</I>(diffSqSumTR / (tempTRcount - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">));
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (diffSqSumBPL == </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">) || (tempBPLcount &LT;= </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">)) {
+                         tempBPLstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                         tempBPLstdev = <I>java</I>.<I>lang</I>.<I>Math</I>.<I>sqrt</I>(diffSqSumBPL / (tempBPLcount - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">));
+                    }
+
+                    </FONT><FONT COLOR="#008000">//make max = mean*2-min</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Symetric) {
+                         tempDRmax = ( (tempDRmean * </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) - tempDRmin);
+                         tempTRmax = ( (tempTRmean * </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) - tempTRmin);
+                         tempPDRmax = ( (tempPDRmean * </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) - tempPDRmin);
+                         tempBPLmax = ( (tempBPLmean * </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">) - tempBPLmin);
+                    }
+
+                    </FONT><FONT COLOR="#008000">//if uf = 1, set all other params to 0</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempDRuf == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                         tempDRmean = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempDRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempDRmin = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempDRmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempPDRuf == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                         tempPDRmean = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempPDRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempPDRmin = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempPDRmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (tempTRuf == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                         tempTRmean = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempTRstdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempTRmin = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                         tempTRmax = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    }
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                         InputTable[j].setAll(tempDRmean, tempDRstdev, tempDRmin,
+                                              tempDRmax, tempDRuf, tempPDRmean,
+                                              tempPDRstdev, tempPDRmin,
+                                              tempPDRmax, tempPDRuf, tempTRmean,
+                                              tempTRstdev, tempTRmin, tempTRmax,
+                                              tempTRuf, tempBPLmean, tempBPLstdev,
+                                              tempBPLmin, tempBPLmax,
+                                              ( (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) tempBifs / (</FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000">) (tempBifs + tempTerms)),
+                                              tempBifs, tempTerms, paramToDo);
+                         tableOut.println(j + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> + InputTable[j].getFPbinMax() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getBifPercent() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getDRmean() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getDRstdev() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getDRmax() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getDRmin() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getDRuf() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getPDRmean() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getPDRstdev() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getPDRmax() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getPDRmin() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getPDRuf() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getTRmean() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getTRstdev() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getTRmax() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getTRmin() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getTRuf() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getNbifs() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getNtips() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getBPLmean() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getBPLstdev() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getBPLmax() + </FONT><FONT COLOR="#0000ff">","</FONT><FONT COLOR="#000000"> +
+                                          InputTable[j].getBPLmin());
+                    }
+               }
+               </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                    inputInfoOutFile.close();
+                    tableOut.close();
+               }
+
+</FONT><FONT COLOR="#008000">//******************************************************************************</FONT><FONT COLOR="#000000">
+</FONT><FONT COLOR="#008000">//******************************************************************************</FONT><FONT COLOR="#000000">
+</FONT><FONT COLOR="#008000">//*********************       END OF INPUT PROCESSING       ********************</FONT><FONT COLOR="#000000">
+</FONT><FONT COLOR="#008000">//*********************       Generation of new trees       ********************</FONT><FONT COLOR="#000000">
+</FONT><FONT COLOR="#008000">//******************************************************************************</FONT><FONT COLOR="#000000">
+</FONT><FONT COLOR="#008000">//******************************************************************************</FONT><FONT COLOR="#000000">
+                     </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                          virtDetailsOut.println();
+                     }
+
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> newTreeCount = stemCount * nToDo; </FONT><FONT COLOR="#008000">//number of virtual trees to create</FONT><FONT COLOR="#000000">
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[] virtBifsArray = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000">[newTreeCount + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> BifsSum = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> BifsMean = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               swcparts.BiffLine[] virtTreesArray = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BiffLine[maxVirtBifLines + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">];
+               Random myRand = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> Random();
+               myRand.setSeed(RandomSeed);
+               <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Creating "</FONT><FONT COLOR="#000000"> + newTreeCount + </FONT><FONT COLOR="#0000ff">" virtual trees."</FONT><FONT COLOR="#000000">);
+
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> currentBranch = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; currentBranch &LT;= maxVirtBifLines; currentBranch++) {
+                    virtTreesArray[currentBranch] = </FONT><FONT COLOR="#000080"><B>new</B></FONT><FONT COLOR="#000000"> swcparts.BiffLine();
+               }
+
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempTP = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempDR = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempPDR = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBPL = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> NBifs = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+
+               </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                    virtBifsOutFile.println();
+                    virtBifsOutFile.println();
+                    virtDetailsOut.println(
+                           </FONT><FONT COLOR="#0000ff">"Line , startRad, taperRate, endRad, branchPL, PDR, DR, d1Rad, d2Rad "</FONT><FONT COLOR="#000000">);
+               }
+
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> currentTreeN = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; currentTreeN &LT;= newTreeCount; currentTreeN++) { </FONT><FONT COLOR="#008000">//for each virtual tree</FONT><FONT COLOR="#000000">
+
+                    virtBifsOutFile.print(currentTreeN);
+
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                         virtDetailsOut.println();
+                         virtDetailsOut.println(</FONT><FONT COLOR="#0000ff">"Tree number : "</FONT><FONT COLOR="#000000"> + currentTreeN);
+                    }
+                    NBifs = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#008000">//Gaussain</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#008000">//    double idia = stemMin - 1;</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#008000">//    while ((idia &LT; stemMin) || (idia &GT; stemMax)){</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#008000">//    idia = (myRand.nextGaussian() * stemStdev) + stemMean;</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#008000">//  }</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#008000">//Uniform</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> idia = (myRand.nextDouble() * (stemMax - stemMin) + stemMin);
+                    <I>System</I>.<I>out</I>.print(</FONT><FONT COLOR="#0000ff">"Tree "</FONT><FONT COLOR="#000000"> + currentTreeN + </FONT><FONT COLOR="#0000ff">"  idia: "</FONT><FONT COLOR="#000000"> + idia);
+
+                    virtTreesArray[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].setStartRAD(idia);
+                    virtTreesArray[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].setBO(</FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">);
+                    virtTreesArray[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].setStartPLS(</FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">);
+                    virtTreesArray[</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">].setParrentNum( -</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+
+                    </FONT><FONT COLOR="#008000">//go through each line of the new virt cell cell</FONT><FONT COLOR="#000000">
+                    </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> nextFreeBranchNum = </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> tempCurrnetBranchLoopMax = maxVirtBifLines / </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">;
+                    </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> currentBranch = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; currentBranch &LT;= tempCurrnetBranchLoopMax;
+                         currentBranch++) {
+
+                         </FONT><FONT COLOR="#008000">//find fundemental param bin for start dia</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> currentBin = actualBins;
+                         </FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> currentTermBin = actualTermBins;
+                         </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = actualBins; j &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j--) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (virtTreesArray[currentBranch].getStartFundementalParamValue(
+                                     paramToDo) &LT;=
+                                  InputTable[j].getFPbinMax()) {
+                                   currentBin = j;
+                              }
+                         }
+
+                         </FONT><FONT COLOR="#008000">//taper</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#008000">//sample taper rate</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (virtTreesArray[currentBranch].getStartRAD() &LT;= MinRad) {
+                              tempTP = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                              tempTP = InputTable[currentBin].getParamValue(
+                                     </FONT><FONT COLOR="#0000ff">"TP"</FONT><FONT COLOR="#000000">, myRand);
+                         }
+                         </FONT><FONT COLOR="#008000">//end rad = start rad * tp</FONT><FONT COLOR="#000000">
+                         virtTreesArray[currentBranch].setEndRAD(
+                                virtTreesArray[currentBranch].getStartRAD() / tempTP);
+
+                         </FONT><FONT COLOR="#008000">//grow</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#008000">//sample path length</FONT><FONT COLOR="#000000">
+                         tempBPL = InputTable[currentBin].getParamValue(
+                                </FONT><FONT COLOR="#0000ff">"BPL"</FONT><FONT COLOR="#000000">, myRand);
+                         </FONT><FONT COLOR="#008000">//set bramch path length</FONT><FONT COLOR="#000000">
+                         virtTreesArray[currentBranch].setBPL(tempBPL);
+
+                         </FONT><FONT COLOR="#008000">//set path length soma</FONT><FONT COLOR="#000000">
+                         virtTreesArray[currentBranch].setEndPLS(
+                                virtTreesArray[currentBranch].getStartPLS() + tempBPL);
+
+                         </FONT><FONT COLOR="#008000">//reset current fundemental paramater bin with end value</FONT><FONT COLOR="#000000">
+                         currentBin = actualBins;
+                         </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = actualBins; j &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j--) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (virtTreesArray[currentBranch].getEndFundementalParamValue(
+                                     paramToDo) &LT;= InputTable[j].getFPbinMax()) {
+                                   currentBin = j;
+                              }
+                         }
+
+                         </FONT><FONT COLOR="#008000">//Find current radius terminal bin</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( ( (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">)) ||
+                               (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"BOTH"</FONT><FONT COLOR="#000000">))) &&
+                             ! (paramToDo.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">))) {
+                              currentTermBin = actualTermBins;
+                              </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> j = actualTermBins; j &GT;= </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; j--) {
+                                   </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (virtTreesArray[currentBranch].getEndFundementalParamValue(
+                                          </FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">) &LT;= RadTable[j].getFPbinMax()) {
+                                        currentTermBin = j;
+                                   }
+                              }
+                         }
+
+                         </FONT><FONT COLOR="#008000">//Print out virtual cell details</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                              virtDetailsOut.print(currentBranch + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> +
+                                     virtTreesArray[currentBranch].getStartRAD() + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> +
+                                     tempTP + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> +
+                                     virtTreesArray[currentBranch].
+                                     getStartFundementalParamValue(
+                                            paramToDo) + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> + tempBPL);
+                         }
+
+                         </FONT><FONT COLOR="#008000">//Bif?</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#008000">//sample bif prob</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#008000">//if no, set bif to 0</FONT><FONT COLOR="#000000">
+                         virtTreesArray[currentBranch].setBIFF(</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"FP"</FONT><FONT COLOR="#000000">)) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( ( (InputTable[currentBin].getParamValue(</FONT><FONT COLOR="#0000ff">"BP"</FONT><FONT COLOR="#000000">, myRand)) &LT;
+                                    myRand.nextDouble()) ||
+                                  (virtTreesArray[currentBranch].getEndFundementalParamValue(
+                                         </FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">) &LT;= MinRad)) {
+                                   virtTreesArray[currentBranch].setBIFF(</FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">);
+                              }
+                         }
+
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">)) {
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( ( (RadTable[currentTermBin].getParamValue(</FONT><FONT COLOR="#0000ff">"BP"</FONT><FONT COLOR="#000000">, myRand)) &LT;
+                                    myRand.nextDouble()) ||
+                                  (virtTreesArray[currentBranch].getEndFundementalParamValue(
+                                         </FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">) &LT;= MinRad)) {
+                                   virtTreesArray[currentBranch].setBIFF(</FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">);
+                              }
+
+                         }
+
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (termType.equalsIgnoreCase(</FONT><FONT COLOR="#0000ff">"BOTH"</FONT><FONT COLOR="#000000">)) {
+                              </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> tempBP = ( ( (InputTable[currentBin].getParamValue(</FONT><FONT COLOR="#0000ff">"BP"</FONT><FONT COLOR="#000000">,
+                                     myRand)) + (RadTable[currentTermBin].getParamValue(</FONT><FONT COLOR="#0000ff">"BP"</FONT><FONT COLOR="#000000">,
+                                     myRand))) / </FONT><FONT COLOR="#0000ff">2</FONT><FONT COLOR="#000000">);
+                              </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> ( (tempBP &LT; myRand.nextDouble()) ||
+                                  (virtTreesArray[currentBranch].getEndFundementalParamValue(
+                                         </FONT><FONT COLOR="#0000ff">"RAD"</FONT><FONT COLOR="#000000">) &LT;= MinRad)) {
+                                   virtTreesArray[currentBranch].setBIFF(</FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">);
+                              }
+                         }
+                         </FONT><FONT COLOR="#000080"><B>else</B></FONT><FONT COLOR="#000000"> {
+                              <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Incorrect command line arguments."</FONT><FONT COLOR="#000000">);
+                              <I>System</I>.<I>out</I>.println(
+                                     </FONT><FONT COLOR="#0000ff">"Format = [input file name], [output file prefix] "</FONT><FONT COLOR="#000000">);
+                              <I>System</I>.<I>exit</I>(</FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+                         }
+
+                         </FONT><FONT COLOR="#008000">//if yes, set bif to 1</FONT><FONT COLOR="#000000">
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (virtTreesArray[currentBranch].getBIFF() == </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">) {
+                              ++NBifs;
+
+                              </FONT><FONT COLOR="#008000">//compute daughter diameters</FONT><FONT COLOR="#000000">
+                              tempPDR = InputTable[currentBin].getParamValue(
+                                     </FONT><FONT COLOR="#0000ff">"PDR"</FONT><FONT COLOR="#000000">, myRand);
+                              </FONT><FONT COLOR="#008000">//Large Daughter rad = end rad / PDR</FONT><FONT COLOR="#000000">
+                              virtTreesArray[currentBranch].setDLRAD(
+                                     virtTreesArray[currentBranch].getEndRAD() / tempPDR);
+
+                              tempDR = InputTable[currentBin].getParamValue(
+                                     </FONT><FONT COLOR="#0000ff">"DR"</FONT><FONT COLOR="#000000">, myRand);
+                              </FONT><FONT COLOR="#008000">//Samll Daughter Rad = Large Daughter Rad / DR</FONT><FONT COLOR="#000000">
+                              virtTreesArray[currentBranch].setDSRAD(
+                                     virtTreesArray[currentBranch].getDLRAD() / tempDR);
+
+                              </FONT><FONT COLOR="#008000">//initialize new daughters</FONT><FONT COLOR="#000000">
+                              virtTreesArray[currentBranch].setD1num(nextFreeBranchNum);
+                              ++nextFreeBranchNum;
+                              virtTreesArray[currentBranch].setD2num(nextFreeBranchNum);
+                              ++nextFreeBranchNum;
+
+                              </FONT><FONT COLOR="#008000">//set new daughter diameters</FONT><FONT COLOR="#000000">
+                              virtTreesArray[virtTreesArray[currentBranch].getD1num()].
+                                     setStartRAD(
+                                            virtTreesArray[currentBranch].getDLRAD());
+                              virtTreesArray[virtTreesArray[currentBranch].getD2num()].
+                                     setStartRAD(
+                                            virtTreesArray[currentBranch].getDSRAD());
+
+                              </FONT><FONT COLOR="#008000">//set parrent number</FONT><FONT COLOR="#000000">
+                              virtTreesArray[virtTreesArray[currentBranch].getD1num()].
+                                     setParrentNum(currentBranch);
+                              virtTreesArray[virtTreesArray[currentBranch].getD2num()].
+                                     setParrentNum(currentBranch);
+
+                              </FONT><FONT COLOR="#008000">//set branch orders</FONT><FONT COLOR="#000000">
+                              virtTreesArray[virtTreesArray[currentBranch].getD1num()].
+                                     setBO(virtTreesArray[currentBranch].getBO() + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+                              virtTreesArray[virtTreesArray[currentBranch].getD2num()].
+                                     setBO(virtTreesArray[currentBranch].getBO() + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">);
+                              virtDetailsOut.print(</FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> + tempPDR + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> + tempDR + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> +
+                                     virtTreesArray[currentBranch].getDSRAD() + </FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> +
+                                     virtTreesArray[currentBranch].getDLRAD());
+                              </FONT><FONT COLOR="#008000">//set pls</FONT><FONT COLOR="#000000">
+                              virtTreesArray[virtTreesArray[currentBranch].getD1num()].setStartPLS(
+                                     virtTreesArray[currentBranch].getEndPLS());
+                              virtTreesArray[virtTreesArray[currentBranch].getD2num()].setStartPLS(
+                                     virtTreesArray[currentBranch].getEndPLS());
+                         }
+
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (currentBranch + </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000"> == (nextFreeBranchNum)) {
+                              </FONT><FONT COLOR="#000080"><B>break</B></FONT><FONT COLOR="#000000">;
+                         }
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                              virtDetailsOut.println();
+                         }
+                    }
+
+                    <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"  NBifs: "</FONT><FONT COLOR="#000000"> + NBifs);
+                    virtBifsOutFile.println(</FONT><FONT COLOR="#0000ff">" , "</FONT><FONT COLOR="#000000"> + NBifs);
+                    </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (Debugging) {
+                         </FONT><FONT COLOR="#000080"><B>if</B></FONT><FONT COLOR="#000000"> (currentTreeN % stemCount == </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">) {
+                              virtBifsOutFile.println(); </FONT><FONT COLOR="#008000">// a space in between tree groups</FONT><FONT COLOR="#000000">
+                         }
+                    }
+                    virtBifsArray[currentTreeN] = NBifs;
+                    BifsSum = BifsSum + NBifs;
+               }
+
+               </FONT><FONT COLOR="#008000">//Compute Global Mean and stdev for nbifs</FONT><FONT COLOR="#000000">
+               BifsMean = (BifsSum / newTreeCount);
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> BifsSumSq = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>double</B></FONT><FONT COLOR="#000000"> BifsStdev = </FONT><FONT COLOR="#0000ff">0</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>for</B></FONT><FONT COLOR="#000000"> (</FONT><FONT COLOR="#000080"><B>int</B></FONT><FONT COLOR="#000000"> i = </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">; i &LT;= newTreeCount; i++) {
+                    BifsSumSq = BifsSumSq + ( (virtBifsArray[i] - BifsMean) *
+                                             (virtBifsArray[i] - BifsMean));
+               }
+               BifsStdev = <I>java</I>.<I>lang</I>.<I>Math</I>.<I>sqrt</I>(BifsSumSq / (newTreeCount - </FONT><FONT COLOR="#0000ff">1</FONT><FONT COLOR="#000000">));
+               <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Bifs Mean: "</FONT><FONT COLOR="#000000"> + BifsMean + </FONT><FONT COLOR="#0000ff">"  BifsStdev: "</FONT><FONT COLOR="#000000"> + BifsStdev);
+               <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Real Biff Mean:  "</FONT><FONT COLOR="#000000"> + realBiffMean);
+               virtBifsOutFile.println();
+               virtBifsOutFile.println(</FONT><FONT COLOR="#0000ff">"Bifs Mean: "</FONT><FONT COLOR="#000000"> + BifsMean + </FONT><FONT COLOR="#0000ff">"  BifsStdev: "</FONT><FONT COLOR="#000000"> + BifsStdev);
+               virtBifsOutFile.println();
+               virtBifsOutFile.println(</FONT><FONT COLOR="#0000ff">"Real Biff Mean:  "</FONT><FONT COLOR="#000000"> + realBiffMean);
+               virtBifsOutFile.close();
+               realBifsFile.close();
+
+</FONT><FONT COLOR="#008000">//******************************************************************************</FONT><FONT COLOR="#000000">
+</FONT><FONT COLOR="#008000">//******************************************************************************</FONT><FONT COLOR="#000000">
+          }
+
+          </FONT><FONT COLOR="#000080"><B>catch</B></FONT><FONT COLOR="#000000"> (IOException e) {
+               <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"error:  "</FONT><FONT COLOR="#000000"> + e.getMessage());
+               <I>System</I>.<I>out</I>.println(</FONT><FONT COLOR="#0000ff">"Hit enter."</FONT><FONT COLOR="#000000">);
+               </FONT><FONT COLOR="#000080"><B>char</B></FONT><FONT COLOR="#000000"> </FONT><FONT COLOR="#808080">character</FONT><FONT COLOR="#000000">;
+               </FONT><FONT COLOR="#000080"><B>try</B></FONT><FONT COLOR="#000000"> {
+                    </FONT><FONT COLOR="#808080">character</FONT><FONT COLOR="#000000"> = (</FONT><FONT COLOR="#000080"><B>char</B></FONT><FONT COLOR="#000000">) <I>System</I>.<I>in</I>.read();
+               }
+               </FONT><FONT COLOR="#000080"><B>catch</B></FONT><FONT COLOR="#000000"> (IOException </FONT><FONT COLOR="#808080">f</FONT><FONT COLOR="#000000">) {}
+          }
+     }
+}
+
+</FONT>
+</PRE>
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial,Helvetica" COLOR="#000000">
+lnded2_0.java</FONT
+></CENTER><FONT SIZE=-2>
+<FONT FACE="Arial,Helvetica" COLOR="#000000">Created with <a href="http://www.borland.com">JBuilder</a></FONT></FONT></TD></TR></TABLE></FONT></BODY></HTML>
